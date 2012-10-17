@@ -1,0 +1,12 @@
+author: deathline75
+database: false
+description: >
+            MCWorld Manager by deathline75
+main: me.deathline75.main.MCWorld
+name: MCWorld
+startup: postworld
+version: '1.0'
+commands:
+       mcw:
+         description: Requires writing
+         usage: <command> <variable>
