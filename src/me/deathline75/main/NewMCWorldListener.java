@@ -66,7 +66,7 @@ public class NewMCWorldListener extends MCWorldListener{
 					sender.sendMessage(ChatColor.RED + "You have not selected a world!");
 				}
 			}
-			if(args.length < 1){
+			if(args.length > 1){
 				try{
 					Player player = (Player)sender;
 					String worldname = "";
