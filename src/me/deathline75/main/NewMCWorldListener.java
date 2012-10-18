@@ -28,14 +28,25 @@ public class NewMCWorldListener extends MCWorldListener{
 		}
 	}
 	
+	
+	//All commands will be moved to new classes when the plugin is stable.
+	//Because I am lazy.
+	//And school is kind of terrible.
 	@Override
 	public void onCommand(CommandSender sender, String label ,String[] args, Command cmd){
+		if(label.equalsIgnoreCase("listwarp")){
+			String warps = "|";
+			while(mcworld.getProps().elements().hasMoreElements()){
+				warps += " " + mcworld.getProps().elements().nextElement().toString() + " |";
+			}
+			sender.sendMessage(warps);
+		}
 		if(label.equalsIgnoreCase("setwarp")){
 			if(sender instanceof Player){
 				Player player = (Player)sender;
 				if(args.length == 1){
 					mcworld.getProps().set(args[0], player.getLocation().getWorld().getName() + "," +player.getLocation().getX() + ","+player.getLocation().getY() + ","+player.getLocation().getZ() + "," + player.getLocation().getYaw() + "," + player.getLocation().getPitch());
-					mcworld.getProps().save();
+					mcworld.getProps().save("MCWorld Warps v1.0");
 					sender.sendMessage("Warp: " + args[0] + " has been made.");
 				}
 				else if(args.length == 0){

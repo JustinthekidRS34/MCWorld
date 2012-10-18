@@ -2,9 +2,7 @@ package me.deathline75.main.util;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Properties;
 
 public class MCWorldProperties extends Properties{
@@ -14,15 +12,13 @@ public class MCWorldProperties extends Properties{
 	 */
 	private static final long serialVersionUID = 2032338856438440700L;
 	
-	private File dirfile;
 	private File file;
 	
-	public MCWorldProperties(File dirfile, File file){
-		this(dirfile, file, true);
+	public MCWorldProperties(File file){
+		this(file, true);
 	}
 	
-	public MCWorldProperties(File dirfile, File file, boolean load){
-		this.setDirectory(dirfile);
+	public MCWorldProperties( File file, boolean load){
 		this.setFile(file);
 		if(load){
 			this.load();
@@ -136,6 +132,11 @@ public class MCWorldProperties extends Properties{
 		  public boolean load(File file) {
 		    if ((file == null) || (file.isDirectory()))
 		      return false;
+		    if(!file.getParentFile().exists()){
+		    	if(!file.getParentFile().mkdirs()){
+		    		file.getParentFile().mkdirs();
+		    	}
+		    }
 		    try
 		    {
 		      if (!file.exists()) {
@@ -147,14 +148,6 @@ public class MCWorldProperties extends Properties{
 		    }
 		    return false;
 		  }
-	
-	public File getDirectory() {
-		return dirfile;
-	}
-
-	public void setDirectory(File dirfile) {
-		this.dirfile = dirfile;
-	}
 
 	public File getFile() {
 		return file;

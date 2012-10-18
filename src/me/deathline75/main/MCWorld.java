@@ -19,10 +19,10 @@ public class MCWorld extends JavaPlugin{
 	private MCWorldListener listener = new MCWorldListener(this);
 	private NewMCWorldListener newlistener = new NewMCWorldListener(this);
 	
-	private File dirfileforwarps = new File(this.getDataFolder(), "MCWorld");
-	private File fileforwarps = new File(this.getDataFolder(), "warps.properties");
+	private File pluginDirectory;
+	private File fileforwarps ;
 	
-	private MCWorldProperties props = new MCWorldProperties(this.dirfileforwarps, this.fileforwarps);
+	private MCWorldProperties props;
 	
 	@Override
 	public void onEnable(){
@@ -30,6 +30,12 @@ public class MCWorld extends JavaPlugin{
 		log.info("[MCWorld] v." + pdf.getVersion() + " has been enabled.");
 		this.getServer().getPluginManager().registerEvents(listener, this);
 		this.getServer().getPluginManager().registerEvents(newlistener, this);
+		pluginDirectory = this.getDataFolder();
+		fileforwarps = new File(getDataFolder(), "warps.properties");
+		props = new MCWorldProperties(this.fileforwarps);
+		if(!pluginDirectory.mkdirs()){
+			pluginDirectory.mkdirs();
+		}
 		this.props.load();
 	}
 	
