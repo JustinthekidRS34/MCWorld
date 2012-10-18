@@ -1,6 +1,9 @@
 package me.deathline75.main;
 
+import java.io.File;
 import java.util.logging.Logger;
+
+import me.deathline75.main.util.MCWorldProperties;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -16,18 +19,29 @@ public class MCWorld extends JavaPlugin{
 	private MCWorldListener listener = new MCWorldListener(this);
 	private NewMCWorldListener newlistener = new NewMCWorldListener(this);
 	
+	private File dirfileforwarps = new File(this.getDataFolder(), "MCWorld");
+	private File fileforwarps = new File(this.getDataFolder(), "warps.properties");
+	
+	private MCWorldProperties props = new MCWorldProperties(this.dirfileforwarps, this.fileforwarps);
+	
 	@Override
 	public void onEnable(){
 		PluginDescriptionFile pdf = this.getDescription();
 		log.info("[MCWorld] v." + pdf.getVersion() + " has been enabled.");
 		this.getServer().getPluginManager().registerEvents(listener, this);
 		this.getServer().getPluginManager().registerEvents(newlistener, this);
+		this.props.load();
 	}
 	
 	@Override
 	public void onDisable(){
 		PluginDescriptionFile pdf = this.getDescription();
 		log.info("[MCWorld] v." + pdf.getVersion() + " has been disabled.");
+		this.props.save();
+	}
+	
+	public MCWorldProperties getProps(){
+		return this.props;
 	}
 	
 	@Override
@@ -47,7 +61,7 @@ public class MCWorld extends JavaPlugin{
 				sender.sendMessage(ChatColor.YELLOW + "-------------------------");
 				sender.sendMessage(ChatColor.GREEN + "MCWorld Version " + pdf.getVersion());
 				sender.sendMessage("Avaliable Commands for MCWorld");
-				sender.sendMessage(ChatColor.GRAY + "| select | unload | tp | props | disable | help | list |");
+				sender.sendMessage(ChatColor.GRAY + "| select | unload | tp | props | disable | help | list | setwarp | warp |");
 				sender.sendMessage(ChatColor.YELLOW + "-------------------------");
 			}
 			return true;

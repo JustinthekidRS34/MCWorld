@@ -1,6 +1,10 @@
 package me.deathline75.main;
 
+import java.util.Iterator;
+
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -26,6 +30,61 @@ public class NewMCWorldListener extends MCWorldListener{
 	
 	@Override
 	public void onCommand(CommandSender sender, String label ,String[] args, Command cmd){
+		if(label.equalsIgnoreCase("setwarp")){
+			if(sender instanceof Player){
+				Player player = (Player)sender;
+				if(args.length == 1){
+					mcworld.getProps().set(args[0], player.getLocation().getWorld().getName() + "," +player.getLocation().getX() + ","+player.getLocation().getY() + ","+player.getLocation().getZ() + "," + player.getLocation().getYaw() + "," + player.getLocation().getPitch());
+					mcworld.getProps().save();
+					sender.sendMessage("Warp: " + args[0] + " has been made.");
+				}
+				else if(args.length == 0){
+					sender.sendMessage("Please specify a warp name.");
+				}
+			}
+			else{
+				sender.sendMessage("You are not in Minecraft!");
+			}
+		}
+		if(label.equalsIgnoreCase("warp")){
+			if(sender instanceof Player){
+				Player player = (Player)sender;
+				if(args.length == 1){
+					String[] stuff = mcworld.getProps().getString(args[0], "").split(",");
+					if(stuff[0] == ""){
+						sender.sendMessage("Invalid warp name");
+					}
+					else{
+						World world = mcworld.getServer().getWorld(stuff[0]);
+						float X = Float.parseFloat(stuff[1]);
+						float Y = Float.parseFloat(stuff[2]);
+						float Z = Float.parseFloat(stuff[3]);
+						float yaw = Float.parseFloat(stuff[4]);
+						float pitch = Float.parseFloat(stuff[5]);
+						Location location = new Location(world, X, Y, Z, yaw, pitch);
+						player.teleport(location);
+					}
+				}
+				else if(args.length == 0){
+					sender.sendMessage("Please specify a warp name.");
+				}
+			}
+			else{
+				sender.sendMessage("You are not in Minecraft!");
+			}
+		}
+		if(label.equalsIgnoreCase("list")){
+			if(args.length == 0){
+				Iterator<World> i = mcworld.getServer().getWorlds().iterator();
+				String Worlds = "|";
+				while(i.hasNext()){
+					Worlds += (" " +i.next().getName() + " |");
+				}
+				
+				sender.sendMessage("Currently Loaded Worlds:");
+				sender.sendMessage(Worlds);				
+			}
+		}
 		if(label.equalsIgnoreCase("select")){
 			if(args.length == 0){
 				try{
@@ -47,9 +106,11 @@ public class NewMCWorldListener extends MCWorldListener{
 						}
 					}
 					PlayerWorld playerworld = new PlayerWorld(sender, mcworld.getServer().createWorld(new WorldCreator(worldname)));
+					playerworld.toString();
 				}
 				else{
 					PlayerWorld playerworld = new PlayerWorld(sender, mcworld.getServer().createWorld(new WorldCreator(args[0])));
+					playerworld.toString();
 				}
 				sender.sendMessage(ChatColor.GREEN + "You have selected and loaded the world.");
 				return;
@@ -66,6 +127,10 @@ public class NewMCWorldListener extends MCWorldListener{
 					sender.sendMessage(ChatColor.RED + "You have not selected a world!");
 				}
 			}
+			if(args.length == 1){
+				mcworld.getServer().unloadWorld(mcworld.getServer().getWorld(args[0]), true);
+				sender.sendMessage(ChatColor.RED + "You have unloaded the world.");
+			}
 			if(args.length > 1){
 				try{
 					Player player = (Player)sender;
@@ -79,6 +144,7 @@ public class NewMCWorldListener extends MCWorldListener{
 						}
 					}
 					mcworld.getServer().unloadWorld(mcworld.getServer().getWorld(worldname), true);
+					player.sendMessage(ChatColor.RED + "You have unloaded the world.");
 				}
 				catch(Exception e){
 					sender.sendMessage(ChatColor.RED + "Error has occured. Please ensure you have the world loaded.");

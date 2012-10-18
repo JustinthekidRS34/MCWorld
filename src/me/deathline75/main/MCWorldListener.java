@@ -1,6 +1,7 @@
 package me.deathline75.main;
 
 import org.bukkit.ChatColor;
+import org.bukkit.World.Environment;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
@@ -17,7 +18,17 @@ public class MCWorldListener implements Listener{
 	
 	@EventHandler
 	public void onPlayerChat(AsyncPlayerChatEvent e){
-		e.setFormat((ChatColor.GREEN + "["+e.getPlayer().getWorld().getName()+"] ")+e.getPlayer().getDisplayName()+ ": " + e.getMessage());
+		String worldname = "";
+		if(e.getPlayer().getWorld().getEnvironment() == Environment.NORMAL){
+			worldname =ChatColor.AQUA + ("[" + e.getPlayer().getWorld().getName() + "] ");
+		}
+		if(e.getPlayer().getWorld().getEnvironment() == Environment.NETHER){
+			worldname =ChatColor.DARK_RED + ("[" + e.getPlayer().getWorld().getName() + "] ");
+		}
+		if(e.getPlayer().getWorld().getEnvironment() == Environment.THE_END){
+			worldname =ChatColor.YELLOW + ("[" + e.getPlayer().getWorld().getName() + "] ");
+		}
+		e.setFormat(worldname+e.getPlayer().getDisplayName()+ ": " + e.getMessage());
 	}
 	
 	public void onCommand(CommandSender sender, String label ,String[] args, Command cmd){
