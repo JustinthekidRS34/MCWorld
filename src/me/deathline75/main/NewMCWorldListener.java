@@ -1,6 +1,10 @@
 package me.deathline75.main;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+
+import me.deathline75.MCWorld.commands.Commandprops;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -19,6 +23,8 @@ public class NewMCWorldListener extends MCWorldListener{
 		// TODO Auto-generated constructor stub
 	}
 	
+	private static Map<String, IMCWorldCommand> commandList = new HashMap<String, IMCWorldCommand>();
+	
 	@EventHandler
 	public void onPlayerJoinGame(PlayerJoinEvent e){
 		e.setJoinMessage(ChatColor.LIGHT_PURPLE + "Welcome "+ e.getPlayer().getDisplayName() + " to the server!");
@@ -33,7 +39,18 @@ public class NewMCWorldListener extends MCWorldListener{
 	//Because I am lazy.
 	//And school is kind of terrible.
 	@Override
-	public void onCommand(CommandSender sender, String label ,String[] args, Command cmd){
+	public boolean onCommand(CommandSender sender, String label ,String[] args, Command cmd){
+		mcworld.log.info("[MCWorld] "+sender.getName() + " just used the command: /mcw "+ label);
+		if(commandList.containsKey(label)){
+			boolean b = commandList.get(label).executeCMD(sender, label, args);
+			if(!b){
+				sender.sendMessage("Unknown command. Type /mcw help for commands.");
+			}
+			return true;
+		}
+		/*
+		 * Code crashed my server.
+		 * Therefore not working as of yet.
 		if(label.equalsIgnoreCase("listwarp")){
 			String warps = "|";
 			while(mcworld.getProps().elements().hasMoreElements()){
@@ -41,6 +58,7 @@ public class NewMCWorldListener extends MCWorldListener{
 			}
 			sender.sendMessage(warps);
 		}
+		*/
 		if(label.equalsIgnoreCase("setwarp")){
 			if(sender instanceof Player){
 				Player player = (Player)sender;
@@ -56,6 +74,7 @@ public class NewMCWorldListener extends MCWorldListener{
 			else{
 				sender.sendMessage("You are not in Minecraft!");
 			}
+			return true;
 		}
 		if(label.equalsIgnoreCase("warp")){
 			if(sender instanceof Player){
@@ -83,6 +102,7 @@ public class NewMCWorldListener extends MCWorldListener{
 			else{
 				sender.sendMessage("You are not in Minecraft!");
 			}
+			return true;
 		}
 		if(label.equalsIgnoreCase("list")){
 			if(args.length == 0){
@@ -95,6 +115,7 @@ public class NewMCWorldListener extends MCWorldListener{
 				sender.sendMessage("Currently Loaded Worlds:");
 				sender.sendMessage(Worlds);				
 			}
+			return true;
 		}
 		if(label.equalsIgnoreCase("select")){
 			if(args.length == 0){
@@ -103,6 +124,7 @@ public class NewMCWorldListener extends MCWorldListener{
 				}
 				catch(NullPointerException e){
 					sender.sendMessage(ChatColor.RED + "You have not selected a world yet!");
+					return false;
 				}
 			}
 			if(args.length != 0){
@@ -124,7 +146,7 @@ public class NewMCWorldListener extends MCWorldListener{
 					playerworld.toString();
 				}
 				sender.sendMessage(ChatColor.GREEN + "You have selected and loaded the world.");
-				return;
+				return true;
 			}
 		}
 		if(label.equalsIgnoreCase("unload")){
@@ -161,6 +183,7 @@ public class NewMCWorldListener extends MCWorldListener{
 					sender.sendMessage(ChatColor.RED + "Error has occured. Please ensure you have the world loaded.");
 				}
 			}
+			return true;
 		}
 		if(label.equalsIgnoreCase("tp")){
 			if(args.length == 0){
@@ -214,7 +237,13 @@ public class NewMCWorldListener extends MCWorldListener{
 					sender.sendMessage("You are not in Minecraft!");
 				}
 			}
+			return true;
 		}
-		return;
+		return false;
 	}	
+	
+	static{
+		commandList.put("props", new Commandprops());
+	}
+	
 }

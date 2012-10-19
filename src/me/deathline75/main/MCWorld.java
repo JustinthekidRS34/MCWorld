@@ -1,6 +1,7 @@
 package me.deathline75.main;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import me.deathline75.main.util.MCWorldProperties;
@@ -8,6 +9,8 @@ import me.deathline75.main.util.MCWorldProperties;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Java15Compat;
@@ -21,7 +24,9 @@ public class MCWorld extends JavaPlugin{
 	
 	private File pluginDirectory;
 	private File fileforwarps ;
+	private File propertiesFile;
 	
+	private FileConfiguration world;
 	private MCWorldProperties props;
 	
 	@Override
@@ -33,6 +38,8 @@ public class MCWorld extends JavaPlugin{
 		pluginDirectory = this.getDataFolder();
 		fileforwarps = new File(getDataFolder(), "warps.properties");
 		props = new MCWorldProperties(this.fileforwarps);
+		this.propertiesFile = new File(getDataFolder(), "world.yml");
+		world = YamlConfiguration.loadConfiguration(propertiesFile);
 		if(!pluginDirectory.mkdirs()){
 			pluginDirectory.mkdirs();
 		}
@@ -44,6 +51,12 @@ public class MCWorld extends JavaPlugin{
 		PluginDescriptionFile pdf = this.getDescription();
 		log.info("[MCWorld] v." + pdf.getVersion() + " has been disabled.");
 		this.props.save();
+		try {
+			world.save(propertiesFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public MCWorldProperties getProps(){

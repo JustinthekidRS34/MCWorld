@@ -31,7 +31,7 @@ public class MCWorldListener implements Listener{
 		e.setFormat(worldname+e.getPlayer().getDisplayName()+ ": " + e.getMessage());
 	}
 	
-	public void onCommand(CommandSender sender, String label ,String[] args, Command cmd){
+	public boolean onCommand(CommandSender sender, String label ,String[] args, Command cmd){
 		mcworld.log.info("[MCWorld] "+sender.getName() + " just used the command: /mcw "+ label);
 		/*
 		if(label.equalsIgnoreCase("create")){
@@ -87,5 +87,6 @@ public class MCWorldListener implements Listener{
 			}
 		}
 		*/
+		return false;
 	}
 }
