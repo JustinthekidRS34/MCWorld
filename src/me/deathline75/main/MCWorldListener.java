@@ -20,13 +20,13 @@ public class MCWorldListener implements Listener{
 	public void onPlayerChat(AsyncPlayerChatEvent e){
 		String worldname = "";
 		if(e.getPlayer().getWorld().getEnvironment() == Environment.NORMAL){
-			worldname =ChatColor.AQUA + ("[" + e.getPlayer().getWorld().getName() + "] ");
+			worldname =(ChatColor.AQUA + ("[" + e.getPlayer().getWorld().getName() + "] "));
 		}
 		if(e.getPlayer().getWorld().getEnvironment() == Environment.NETHER){
-			worldname =ChatColor.DARK_RED + ("[" + e.getPlayer().getWorld().getName() + "] ");
+			worldname =(ChatColor.DARK_RED + ("[" + e.getPlayer().getWorld().getName() + "] "));
 		}
 		if(e.getPlayer().getWorld().getEnvironment() == Environment.THE_END){
-			worldname =ChatColor.YELLOW + ("[" + e.getPlayer().getWorld().getName() + "] ");
+			worldname =(ChatColor.YELLOW + ("[" + e.getPlayer().getWorld().getName() + "] "));
 		}
 		e.setFormat(worldname+e.getPlayer().getDisplayName()+ ": " + e.getMessage());
 	}

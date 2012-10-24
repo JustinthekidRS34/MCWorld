@@ -24,9 +24,9 @@ public class MCWorld extends JavaPlugin{
 	
 	private File pluginDirectory;
 	private File fileforwarps ;
-	private File propertiesFile;
+	private static File propertiesFile;
 	
-	private FileConfiguration world;
+	private static FileConfiguration world;
 	private MCWorldProperties props;
 	
 	@Override
@@ -38,7 +38,15 @@ public class MCWorld extends JavaPlugin{
 		pluginDirectory = this.getDataFolder();
 		fileforwarps = new File(getDataFolder(), "warps.properties");
 		props = new MCWorldProperties(this.fileforwarps);
-		this.propertiesFile = new File(getDataFolder(), "world.yml");
+		propertiesFile = new File(getDataFolder(), "world.yml");
+		if(!propertiesFile.exists()){
+			try {
+				propertiesFile.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		world = YamlConfiguration.loadConfiguration(propertiesFile);
 		if(!pluginDirectory.mkdirs()){
 			pluginDirectory.mkdirs();
@@ -63,6 +71,15 @@ public class MCWorld extends JavaPlugin{
 		return this.props;
 	}
 	
+	public static FileConfiguration getPropertiesFile(){
+		return world;
+	}
+	
+	public static File getProperties(){
+		return propertiesFile;
+	}
+	
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
 		if(label.equalsIgnoreCase("mcw")){
@@ -80,7 +97,7 @@ public class MCWorld extends JavaPlugin{
 				sender.sendMessage(ChatColor.YELLOW + "-------------------------");
 				sender.sendMessage(ChatColor.GREEN + "MCWorld Version " + pdf.getVersion());
 				sender.sendMessage("Avaliable Commands for MCWorld");
-				sender.sendMessage(ChatColor.GRAY + "| select | unload | tp | props | disable | help | list | setwarp | warp |");
+				sender.sendMessage(ChatColor.GRAY + "| select | unload | tp | props | disable | help | list | setwarp | warp | unloadnosave | playerlist | kickallworld |");
 				sender.sendMessage(ChatColor.YELLOW + "-------------------------");
 			}
 			return true;

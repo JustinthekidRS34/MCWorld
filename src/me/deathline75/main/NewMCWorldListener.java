@@ -4,12 +4,16 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import me.deathline75.MCWorld.commands.Commandjoinall;
+import me.deathline75.MCWorld.commands.Commandkickallworld;
+import me.deathline75.MCWorld.commands.Commandplayerlist;
 import me.deathline75.MCWorld.commands.Commandprops;
+import me.deathline75.MCWorld.commands.Commandselect;
+import me.deathline75.MCWorld.commands.Commandunloadnosave;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -33,7 +37,6 @@ public class NewMCWorldListener extends MCWorldListener{
 			
 		}
 	}
-	
 	
 	//All commands will be moved to new classes when the plugin is stable.
 	//Because I am lazy.
@@ -117,38 +120,7 @@ public class NewMCWorldListener extends MCWorldListener{
 			}
 			return true;
 		}
-		if(label.equalsIgnoreCase("select")){
-			if(args.length == 0){
-				try{
-					sender.sendMessage((ChatColor.GREEN + "Currently selected world: " )+ ChatColor.YELLOW + PlayerWorld.getWorld(sender).getName());
-				}
-				catch(NullPointerException e){
-					sender.sendMessage(ChatColor.RED + "You have not selected a world yet!");
-					return false;
-				}
-			}
-			if(args.length != 0){
-				if(args.length != 1){
-					String worldname = "";
-					for(String s:args){
-						if(s != args[args.length - 1]){
-							worldname += (s + " ");
-						}
-						else{
-							worldname += (s);
-						}
-					}
-					PlayerWorld playerworld = new PlayerWorld(sender, mcworld.getServer().createWorld(new WorldCreator(worldname)));
-					playerworld.toString();
-				}
-				else{
-					PlayerWorld playerworld = new PlayerWorld(sender, mcworld.getServer().createWorld(new WorldCreator(args[0])));
-					playerworld.toString();
-				}
-				sender.sendMessage(ChatColor.GREEN + "You have selected and loaded the world.");
-				return true;
-			}
-		}
+		
 		if(label.equalsIgnoreCase("unload")){
 			if(args.length == 0){
 				try{
@@ -244,6 +216,11 @@ public class NewMCWorldListener extends MCWorldListener{
 	
 	static{
 		commandList.put("props", new Commandprops());
+		commandList.put("select", new Commandselect());
+		commandList.put("unloadnosave", new Commandunloadnosave());
+		commandList.put("playerlist", new Commandplayerlist());
+		commandList.put("kickallworld", new Commandkickallworld());
+		commandList.put("joinall", new Commandjoinall());
 	}
 	
 }
