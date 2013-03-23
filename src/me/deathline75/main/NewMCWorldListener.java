@@ -31,11 +31,7 @@ public class NewMCWorldListener extends MCWorldListener{
 	
 	@EventHandler
 	public void onPlayerJoinGame(PlayerJoinEvent e){
-		e.setJoinMessage(ChatColor.LIGHT_PURPLE + "Welcome "+ e.getPlayer().getDisplayName() + " to the server!");
 		e.getPlayer().sendMessage("[MCWorld] You are currently in World: "+ e.getPlayer().getWorld().getName());
-		if(!e.getPlayer().hasPlayedBefore()){
-			
-		}
 	}
 	
 	//All commands will be moved to new classes when the plugin is stable.

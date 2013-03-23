@@ -1,11 +1,16 @@
 package me.deathline75.MCWorld.commands;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
 import me.deathline75.main.IMCWorldCommand;
+import me.deathline75.main.MCWorld;
 import me.deathline75.main.PlayerWorld;
 
 public class Commandprops implements IMCWorldCommand{
@@ -29,6 +34,7 @@ public class Commandprops implements IMCWorldCommand{
 			if(args.length == 2){
 				String label2 = args[0].toLowerCase();
 				World world = PlayerWorld.getWorld(sender);
+				Map<String, Object> props = new HashMap<String, Object>(Commandselect.properties);
 				switch(label2){
 				case "ticksperanimalspawn":
 					try{
@@ -217,6 +223,7 @@ public class Commandprops implements IMCWorldCommand{
 					try{
 						world.setKeepSpawnInMemory(Boolean.parseBoolean(args[1]));
 						sender.sendMessage("The property: " + label2.toUpperCase() + " has been set to: " + args[1]);
+						props.put(label2, Boolean.parseBoolean(args[1]));
 					}catch(Exception e){
 						sender.sendMessage(ChatColor.RED + "Error has occured. You may not have selected a world or provided an invalid input.");
 						e.printStackTrace();
@@ -226,6 +233,7 @@ public class Commandprops implements IMCWorldCommand{
 					try{
 						world.setAutoSave(Boolean.parseBoolean(args[1]));
 						sender.sendMessage("The property: " + label2.toUpperCase() + " has been set to: " + args[1]);
+						props.put(label2, Boolean.parseBoolean(args[1]));
 					}catch(Exception e){
 						sender.sendMessage(ChatColor.RED + "Error has occured. You may not have selected a world or provided an invalid input.");
 						e.printStackTrace();
@@ -235,11 +243,18 @@ public class Commandprops implements IMCWorldCommand{
 					sender.sendMessage(ChatColor.RED + "Invalid properties. Type /mcw props for the list.");
 					break;
 				}
+				MCWorld.getPropertiesFile().set(world.getName(), props);
+				try {
+					MCWorld.getPropertiesFile().save(MCWorld.getProperties());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				return true;
 				}
 				
 			}
-		
+		sender.sendMessage(ChatColor.RED + "You have not selected a world yet!");
 		return false;
 	}
 

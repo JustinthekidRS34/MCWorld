@@ -1,6 +1,7 @@
 package me.deathline75.main;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -9,6 +10,7 @@ import me.deathline75.main.util.MCWorldProperties;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -48,6 +50,13 @@ public class MCWorld extends JavaPlugin{
 			}
 		}
 		world = YamlConfiguration.loadConfiguration(propertiesFile);
+		try {
+			world.load(propertiesFile);
+		} catch (IOException
+				| InvalidConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if(!pluginDirectory.mkdirs()){
 			pluginDirectory.mkdirs();
 		}
