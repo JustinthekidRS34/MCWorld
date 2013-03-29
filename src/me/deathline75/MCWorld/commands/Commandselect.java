@@ -29,6 +29,7 @@ public class Commandselect implements IMCWorldCommand{
 			if(args.length == 0){
 				try{
 					sender.sendMessage((ChatColor.GREEN + "Currently selected world: " )+ ChatColor.YELLOW + PlayerWorld.getWorld(sender).getName());
+					return true;
 				}
 				catch(NullPointerException e){
 					sender.sendMessage(ChatColor.RED + "You have not selected a world yet!");

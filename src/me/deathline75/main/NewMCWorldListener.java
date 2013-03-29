@@ -1,5 +1,6 @@
 package me.deathline75.main;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -47,24 +48,34 @@ public class NewMCWorldListener extends MCWorldListener{
 			}
 			return true;
 		}
-		/*
-		 * Code crashed my server.
-		 * Therefore not working as of yet.
+		
 		if(label.equalsIgnoreCase("listwarp")){
-			String warps = "|";
-			while(mcworld.getProps().elements().hasMoreElements()){
-				warps += " " + mcworld.getProps().elements().nextElement().toString() + " |";
+			sender.sendMessage(ChatColor.GOLD + "List of avaliable warps: [World / Co-ordidates X / Y / Z / Yaw / Pitch]");
+			sender.sendMessage(ChatColor.GRAY + "---");
+			for(String warpname: MCWorld.props.getKeys(true)){
+				String[] s = MCWorld.props.getString(warpname).split(",");
+				Double x = Double.parseDouble(s[1]);
+				Double y = Double.parseDouble(s[2]);
+				Double z = Double.parseDouble(s[3]);
+				Double yaw = Double.parseDouble(s[4]);
+				Double pitch = Double.parseDouble(s[5]);
+				sender.sendMessage((ChatColor.GREEN + warpname) + ChatColor.AQUA + ": " + s[0] + " / " + x.intValue() + " / " + y.intValue() + " / " + z.intValue() +" / " + yaw.intValue() + " / " + pitch.intValue());
+				sender.sendMessage(ChatColor.GRAY + "---");
 			}
-			sender.sendMessage(warps);
 		}
-		*/
+		
 		if(label.equalsIgnoreCase("setwarp")){
 			if(sender instanceof Player){
 				Player player = (Player)sender;
 				if(args.length == 1){
-					mcworld.getProps().set(args[0], player.getLocation().getWorld().getName() + "," +player.getLocation().getX() + ","+player.getLocation().getY() + ","+player.getLocation().getZ() + "," + player.getLocation().getYaw() + "," + player.getLocation().getPitch());
-					mcworld.getProps().save("MCWorld Warps v1.0");
+					MCWorld.props.set(args[0], player.getLocation().getWorld().getName() + "," +player.getLocation().getX() + ","+player.getLocation().getY() + ","+player.getLocation().getZ() + "," + player.getLocation().getYaw() + "," + player.getLocation().getPitch());
 					sender.sendMessage("Warp: " + args[0] + " has been made.");
+					try {
+						MCWorld.props.save(MCWorld.getFileforwarps());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 				else if(args.length == 0){
 					sender.sendMessage("Please specify a warp name.");
@@ -79,7 +90,7 @@ public class NewMCWorldListener extends MCWorldListener{
 			if(sender instanceof Player){
 				Player player = (Player)sender;
 				if(args.length == 1){
-					String[] stuff = mcworld.getProps().getString(args[0], "").split(",");
+					String[] stuff = MCWorld.props.getString(args[0], "").split(",");
 					if(stuff[0] == ""){
 						sender.sendMessage("Invalid warp name");
 					}

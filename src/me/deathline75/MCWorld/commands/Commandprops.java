@@ -1,13 +1,12 @@
 package me.deathline75.MCWorld.commands;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 
 import me.deathline75.main.IMCWorldCommand;
 import me.deathline75.main.MCWorld;
@@ -34,12 +33,13 @@ public class Commandprops implements IMCWorldCommand{
 			if(args.length == 2){
 				String label2 = args[0].toLowerCase();
 				World world = PlayerWorld.getWorld(sender);
-				Map<String, Object> props = new HashMap<String, Object>(Commandselect.properties);
+				ConfigurationSection properties = MCWorld.getPropertiesFile().getConfigurationSection(PlayerWorld.getWorld(sender).getName());
 				switch(label2){
 				case "ticksperanimalspawn":
 					try{
 						world.setTicksPerAnimalSpawns(Integer.parseInt(args[1]));
 						sender.sendMessage("The property: " + label2.toUpperCase() + " has been set to: " + args[1]);
+						properties.set(label2, Integer.parseInt(args[1]));
 					}catch(Exception e){
 						sender.sendMessage(ChatColor.RED + "Error has occured. You may not have selected a world or provided an invalid input.");
 						e.printStackTrace();
@@ -49,6 +49,7 @@ public class Commandprops implements IMCWorldCommand{
 					try{
 						world.setTicksPerMonsterSpawns(Integer.parseInt(args[1]));
 						sender.sendMessage("The property: " + label2.toUpperCase() + " has been set to: " + args[1]);
+						properties.set(label2, Integer.parseInt(args[1]));
 					}catch(Exception e){
 						sender.sendMessage(ChatColor.RED + "Error has occured. You may not have selected a world or provided an invalid input.");
 						e.printStackTrace();
@@ -58,6 +59,7 @@ public class Commandprops implements IMCWorldCommand{
 					try{
 						PlayerWorld.getWorld(sender).setSpawnFlags(Boolean.parseBoolean(args[1]), world.getAllowAnimals());
 						sender.sendMessage("The property: " + label2.toUpperCase() + " has been set to: " + args[1]);
+						properties.set(label2, Boolean.parseBoolean(args[1]));
 					}catch(Exception e){
 						sender.sendMessage(ChatColor.RED + "Error has occured. You may not have selected a world or provided an invalid input.");
 						e.printStackTrace();
@@ -67,6 +69,7 @@ public class Commandprops implements IMCWorldCommand{
 					try{
 						PlayerWorld.getWorld(sender).setSpawnFlags(world.getAllowMonsters(),Boolean.parseBoolean(args[1]));
 						sender.sendMessage("The property: " + label2.toUpperCase() + " has been set to: " + args[1]);
+						properties.set(label2, Boolean.parseBoolean(args[1]));
 					}catch(Exception e){
 						sender.sendMessage(ChatColor.RED + "Error has occured. You may not have selected a world or provided an invalid input.");
 						e.printStackTrace();
@@ -76,6 +79,7 @@ public class Commandprops implements IMCWorldCommand{
 					try{
 						world.setAnimalSpawnLimit(Integer.parseInt(args[1]));
 						sender.sendMessage("The property: " + label2.toUpperCase() + " has been set to: " + args[1]);
+						properties.set(label2, Integer.parseInt(args[1]));
 					}catch(Exception e){
 						sender.sendMessage(ChatColor.RED + "Error has occured. You may not have selected a world or provided an invalid input.");
 						e.printStackTrace();
@@ -85,6 +89,7 @@ public class Commandprops implements IMCWorldCommand{
 					try{
 						world.setMonsterSpawnLimit(Integer.parseInt(args[1]));
 						sender.sendMessage("The property: " + label2.toUpperCase() + " has been set to: " + args[1]);
+						properties.set(label2, Integer.parseInt(args[1]));
 					}catch(Exception e){
 						sender.sendMessage(ChatColor.RED + "Error has occured. You may not have selected a world or provided an invalid input.");
 						e.printStackTrace();
@@ -96,6 +101,7 @@ public class Commandprops implements IMCWorldCommand{
 						if(difficulty < 3){
 							world.setDifficulty(Difficulty.getByValue(difficulty));
 							sender.sendMessage("The property: " + label2.toUpperCase() + " has been set to: " + world.getDifficulty().name());
+							properties.set(label2, Integer.parseInt(args[1]));
 						}
 						else{
 							sender.sendMessage(ChatColor.RED + "Error has occured. You have provided an invalid input.");
@@ -105,18 +111,22 @@ public class Commandprops implements IMCWorldCommand{
 						if(args[1].equalsIgnoreCase("easy")){
 							world.setDifficulty(Difficulty.EASY);
 							sender.sendMessage("The property: " + label2.toUpperCase() + " has been set to: " + world.getDifficulty().name());
+							properties.set(label2, 1);
 							}
 						else if(args[1].equalsIgnoreCase("normal")){
 							world.setDifficulty(Difficulty.NORMAL);	
 							sender.sendMessage("The property: " + label2.toUpperCase() + " has been set to: " + world.getDifficulty().name());
+							properties.set(label2, 2);
 							}
 						else if(args[1].equalsIgnoreCase("hard")){
 							world.setDifficulty(Difficulty.HARD);
 							sender.sendMessage("The property: " + label2.toUpperCase() + " has been set to: " + world.getDifficulty().name());
+							properties.set(label2, 3);
 						}
 						else if(args[1].equalsIgnoreCase("peaceful")){
 							world.setDifficulty(Difficulty.PEACEFUL);
 							sender.sendMessage("The property: " + label2.toUpperCase() + " has been set to: " + world.getDifficulty().name());
+							properties.set(label2, 0);
 						}
 						else{
 							sender.sendMessage(ChatColor.RED + "Error has occured. You may not have selected a world or provided an invalid input.");
@@ -164,6 +174,7 @@ public class Commandprops implements IMCWorldCommand{
 					try{
 						world.setFullTime(Long.parseLong(args[1]));
 						sender.sendMessage("The property: " + label2.toUpperCase() + " has been set to: " + args[1]);
+						properties.set(label2, Integer.parseInt(args[1]));
 					}catch(Exception e){
 						sender.sendMessage(ChatColor.RED + "Error has occured. You may not have selected a world or provided an invalid input.");
 						e.printStackTrace();
@@ -199,6 +210,7 @@ public class Commandprops implements IMCWorldCommand{
 					try{
 						world.setPVP(Boolean.parseBoolean(args[1]));
 						sender.sendMessage("The property: " + label2.toUpperCase() + " has been set to: " + args[1]);
+						properties.set(label2, Boolean.parseBoolean(args[1]));
 					}catch(Exception e){
 						sender.sendMessage(ChatColor.RED + "Error has occured. You may not have selected a world or provided an invalid input.");
 						e.printStackTrace();
@@ -223,7 +235,7 @@ public class Commandprops implements IMCWorldCommand{
 					try{
 						world.setKeepSpawnInMemory(Boolean.parseBoolean(args[1]));
 						sender.sendMessage("The property: " + label2.toUpperCase() + " has been set to: " + args[1]);
-						props.put(label2, Boolean.parseBoolean(args[1]));
+						properties.set(label2, Boolean.parseBoolean(args[1]));
 					}catch(Exception e){
 						sender.sendMessage(ChatColor.RED + "Error has occured. You may not have selected a world or provided an invalid input.");
 						e.printStackTrace();
@@ -233,7 +245,7 @@ public class Commandprops implements IMCWorldCommand{
 					try{
 						world.setAutoSave(Boolean.parseBoolean(args[1]));
 						sender.sendMessage("The property: " + label2.toUpperCase() + " has been set to: " + args[1]);
-						props.put(label2, Boolean.parseBoolean(args[1]));
+						properties.set(label2, Boolean.parseBoolean(args[1]));
 					}catch(Exception e){
 						sender.sendMessage(ChatColor.RED + "Error has occured. You may not have selected a world or provided an invalid input.");
 						e.printStackTrace();
@@ -243,7 +255,6 @@ public class Commandprops implements IMCWorldCommand{
 					sender.sendMessage(ChatColor.RED + "Invalid properties. Type /mcw props for the list.");
 					break;
 				}
-				MCWorld.getPropertiesFile().set(world.getName(), props);
 				try {
 					MCWorld.getPropertiesFile().save(MCWorld.getProperties());
 				} catch (IOException e) {

@@ -1,11 +1,8 @@
 package me.deathline75.main;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Logger;
-
-import me.deathline75.main.util.MCWorldProperties;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -24,12 +21,11 @@ public class MCWorld extends JavaPlugin{
 	private MCWorldListener listener = new MCWorldListener(this);
 	private NewMCWorldListener newlistener = new NewMCWorldListener(this);
 	
-	private File pluginDirectory;
-	private File fileforwarps ;
+	private static File fileforwarps ;
 	private static File propertiesFile;
 	
 	private static FileConfiguration world;
-	private MCWorldProperties props;
+	public static FileConfiguration props;
 	
 	@Override
 	public void onEnable(){
@@ -37,9 +33,7 @@ public class MCWorld extends JavaPlugin{
 		log.info("[MCWorld] v." + pdf.getVersion() + " has been enabled.");
 		this.getServer().getPluginManager().registerEvents(listener, this);
 		this.getServer().getPluginManager().registerEvents(newlistener, this);
-		pluginDirectory = this.getDataFolder();
-		fileforwarps = new File(getDataFolder(), "warps.properties");
-		props = new MCWorldProperties(this.fileforwarps);
+		setFileforwarps(new File(getDataFolder(), "warps.yml"));
 		propertiesFile = new File(getDataFolder(), "world.yml");
 		if(!propertiesFile.exists()){
 			try {
@@ -49,35 +43,36 @@ public class MCWorld extends JavaPlugin{
 				e.printStackTrace();
 			}
 		}
+		if(!getFileforwarps().exists()){
+			try {
+				getFileforwarps().createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		world = YamlConfiguration.loadConfiguration(propertiesFile);
+		props = YamlConfiguration.loadConfiguration(getFileforwarps());
 		try {
 			world.load(propertiesFile);
+			props.load(getFileforwarps());
 		} catch (IOException
 				| InvalidConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if(!pluginDirectory.mkdirs()){
-			pluginDirectory.mkdirs();
-		}
-		this.props.load();
 	}
 	
 	@Override
 	public void onDisable(){
 		PluginDescriptionFile pdf = this.getDescription();
 		log.info("[MCWorld] v." + pdf.getVersion() + " has been disabled.");
-		this.props.save();
 		try {
 			world.save(propertiesFile);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	public MCWorldProperties getProps(){
-		return this.props;
 	}
 	
 	public static FileConfiguration getPropertiesFile(){
@@ -112,5 +107,13 @@ public class MCWorld extends JavaPlugin{
 			return true;
 		}
 		return false;
+	}
+
+	public static File getFileforwarps() {
+		return fileforwarps;
+	}
+
+	public static void setFileforwarps(File fileforwarps) {
+		MCWorld.fileforwarps = fileforwarps;
 	}
 }
