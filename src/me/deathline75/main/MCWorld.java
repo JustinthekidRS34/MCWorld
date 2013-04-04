@@ -101,7 +101,7 @@ public class MCWorld extends JavaPlugin{
 				sender.sendMessage(ChatColor.YELLOW + "-------------------------");
 				sender.sendMessage(ChatColor.GREEN + "MCWorld Version " + pdf.getVersion());
 				sender.sendMessage("Avaliable Commands for MCWorld");
-				sender.sendMessage(ChatColor.GRAY + "| select | unload | tp | props | disable | help | list | setwarp | warp | unloadnosave | playerlist | kickallworld |");
+				sender.sendMessage(ChatColor.GRAY + "| select | unload | tp | props | help | list | setwarp | warp | unloadnosave | playerlist | kickallworld | listwarp | help |");
 				sender.sendMessage(ChatColor.YELLOW + "-------------------------");
 			}
 			return true;

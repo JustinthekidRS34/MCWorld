@@ -2,6 +2,7 @@ package me.deathline75.MCWorld.commands;
 
 import java.io.IOException;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -32,6 +33,16 @@ public class Commandsetwarp implements IMCWorldCommand {
 			sender.sendMessage("You are not in Minecraft!");
 		}
 		return true;
+	}
+
+	@Override
+	public String[] getHelp() {
+		// TODO Auto-generated method stub
+		return new String[]{
+			ChatColor.GRAY + "Usage: /mcw setwarp [Warp Name]", 
+			ChatColor.DARK_AQUA + "Description: Sets and saves the warp into warp.yml. One word only.",
+			ChatColor.DARK_RED + "Notes: Ensure the world for the warp is loaded before teleporting to the specified warp."
+		};
 	}
 
 }

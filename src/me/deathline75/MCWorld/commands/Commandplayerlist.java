@@ -60,4 +60,14 @@ public class Commandplayerlist implements IMCWorldCommand{
 		return true;
 	}
 
+	@Override
+	public String[] getHelp() {
+		// TODO Auto-generated method stub
+		return new String[]{
+			ChatColor.GRAY + "Usage: /mcw playerlist (World Name)", 
+			ChatColor.DARK_AQUA + "Description: Lists all the players in a world.",
+			ChatColor.DARK_RED + "Notes: Ensure the world is loaded before using the command."
+		};
+	}
+
 }

@@ -3,6 +3,7 @@ package me.deathline75.main;
 import java.util.HashMap;
 import java.util.Map;
 
+import me.deathline75.MCWorld.commands.Commandhelp;
 import me.deathline75.MCWorld.commands.Commandjoinall;
 import me.deathline75.MCWorld.commands.Commandkickallworld;
 import me.deathline75.MCWorld.commands.Commandlist;
@@ -28,7 +29,7 @@ public class NewMCWorldListener extends MCWorldListener{
 		// TODO Auto-generated constructor stub
 	}
 	
-	private static Map<String, IMCWorldCommand> commandList = new HashMap<String, IMCWorldCommand>();
+	public static Map<String, IMCWorldCommand> commandList = new HashMap<String, IMCWorldCommand>();
 	
 	@EventHandler
 	public void onPlayerJoinGame(PlayerJoinEvent e){
@@ -68,6 +69,7 @@ public class NewMCWorldListener extends MCWorldListener{
 		commandList.put("warp", new Commandwarp());
 		commandList.put("unload", new Commandunload());
 		commandList.put("tp", new Commandtp());
+		commandList.put("help", new Commandhelp());
 	}
 	
 }

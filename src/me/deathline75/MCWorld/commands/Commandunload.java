@@ -47,5 +47,15 @@ public class Commandunload implements IMCWorldCommand{
 		}
 		return true;
 	}
+	
+	@Override
+	public String[] getHelp() {
+		// TODO Auto-generated method stub
+		return new String[]{
+			ChatColor.GRAY + "Usage: /mcw unload (World Name)", 
+			ChatColor.DARK_AQUA + "Description: Unloads a world",
+			ChatColor.DARK_RED + "Notes: Ensure the world is loaded before unloading the world."
+		};
+	}
 
 }

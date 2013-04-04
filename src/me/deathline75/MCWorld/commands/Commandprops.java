@@ -268,5 +268,15 @@ public class Commandprops implements IMCWorldCommand{
 		sender.sendMessage(ChatColor.RED + "You have not selected a world yet!");
 		return false;
 	}
+	
+	@Override
+	public String[] getHelp() {
+		// TODO Auto-generated method stub
+		return new String[]{
+			ChatColor.GRAY + "Usage: /mcw props ([Property Name] (Value))", 
+			ChatColor.DARK_AQUA + "Description: Checks/Alters the value of the property of the world.",
+			ChatColor.DARK_RED + "Notes: Ensure that you have selected a world before using. Typing /mcw props will give the properties."
+		};
+	}
 
 }

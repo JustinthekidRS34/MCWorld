@@ -25,4 +25,14 @@ public class Commandlistwarp implements IMCWorldCommand{
 		return true;
 	}
 
+	@Override
+	public String[] getHelp() {
+		// TODO Auto-generated method stub
+		return new String[]{
+			ChatColor.GRAY + "Usage: /mcw listwarp", 
+			ChatColor.DARK_AQUA + "Description: Lists all the warps avaliable for use.",
+			ChatColor.DARK_RED + "Notes: Ensure the world for the warp is loaded before teleporting to the specified warp."
+		};
+	}
+
 }

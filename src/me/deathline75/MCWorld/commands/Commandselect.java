@@ -136,4 +136,14 @@ public class Commandselect implements IMCWorldCommand{
 		properties.put("keepspawninmemory", true);
 	}
 
+	@Override
+	public String[] getHelp() {
+		// TODO Auto-generated method stub
+		return new String[]{
+			ChatColor.GRAY + "Usage: /mcw select|load|create [World Name]", 
+			ChatColor.DARK_AQUA + "Description: Loads/Creates the world and selects the world",
+			ChatColor.DARK_RED + "Notes: If it fails to detect the world, it will creaete a new world without consent."
+		};
+	}
+
 }

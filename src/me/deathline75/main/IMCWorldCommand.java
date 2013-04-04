@@ -6,4 +6,6 @@ public abstract interface IMCWorldCommand{
 	
 	public abstract boolean executeCMD(CommandSender sender,
 			String label, String[] args); 
+	
+	public String[] getHelp();
 }

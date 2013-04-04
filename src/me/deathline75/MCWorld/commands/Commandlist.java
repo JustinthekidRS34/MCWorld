@@ -44,4 +44,14 @@ public class Commandlist implements IMCWorldCommand {
 		return false;
 	}
 
+	@Override
+	public String[] getHelp() {
+		// TODO Auto-generated method stub
+		return new String[]{
+			ChatColor.GRAY + "Usage: /mcw list", 
+			ChatColor.DARK_AQUA + "Description: Lists all the worlds found in the server directory.",
+			ChatColor.DARK_RED + "Notes: GREEN represents loaded world while RED represents unloaded world."
+		};
+	}
+
 }

@@ -53,5 +53,15 @@ public class Commandkickallworld implements IMCWorldCommand{
 		}
 		return true;
 	}
+	
+	@Override
+	public String[] getHelp() {
+		// TODO Auto-generated method stub
+		return new String[]{
+			ChatColor.GRAY + "Usage: /mcw kickallworld (World Name)", 
+			ChatColor.DARK_AQUA + "Description: Kicks everyone that is in the world out of the server.",
+			ChatColor.DARK_RED + "Notes: The kicked message is '[MCWorld] An operator is having maintanance to the server.'"
+		};
+	}
 
 }

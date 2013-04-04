@@ -56,5 +56,15 @@ public class Commandjoinall implements IMCWorldCommand{
 		}
 		return true;
 	}
+	
+	@Override
+	public String[] getHelp() {
+		// TODO Auto-generated method stub
+		return new String[]{
+			ChatColor.GRAY + "Usage: /mcw joinall (World Name)", 
+			ChatColor.DARK_AQUA + "Description: Teleports all players to the world's spawn point.",
+			ChatColor.DARK_RED + "Notes: Ensure the world is loaded before teleporting."
+		};
+	}
 
 }

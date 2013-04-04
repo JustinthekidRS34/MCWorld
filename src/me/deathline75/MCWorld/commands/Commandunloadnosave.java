@@ -48,5 +48,15 @@ public class Commandunloadnosave implements IMCWorldCommand{
 		}
 		return true;
 	}
+	
+	@Override
+	public String[] getHelp() {
+		// TODO Auto-generated method stub
+		return new String[]{
+			ChatColor.GRAY + "Usage: /mcw unloadnosave (World Name)", 
+			ChatColor.DARK_AQUA + "Description: Unloads the world without saving it.",
+			ChatColor.DARK_RED + "Notes: Ensure the world is loaded before unloading it."
+		};
+	}
 
 }
