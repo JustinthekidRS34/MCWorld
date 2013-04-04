@@ -25,7 +25,7 @@ public class Commandselect implements IMCWorldCommand{
 	
 	@Override
 	public boolean executeCMD(CommandSender sender, String label, String[] args) {
-		if(label.equalsIgnoreCase("select")){
+		if(label.equalsIgnoreCase("select") || label.equalsIgnoreCase("create") || label.equalsIgnoreCase("load")){
 			if(args.length == 0){
 				try{
 					sender.sendMessage((ChatColor.GREEN + "Currently selected world: " )+ ChatColor.YELLOW + PlayerWorld.getWorld(sender).getName());
@@ -134,6 +134,16 @@ public class Commandselect implements IMCWorldCommand{
 		properties.put("pvp", false);
 		properties.put("autosave", true);
 		properties.put("keepspawninmemory", true);
+	}
+
+	@Override
+	public String[] getHelp() {
+		// TODO Auto-generated method stub
+		return new String[]{
+			ChatColor.GRAY + "Usage: /mcw select|load|create [World Name]", 
+			ChatColor.DARK_AQUA + "Description: Loads/Creates the world and selects the world",
+			ChatColor.DARK_RED + "Notes: If it fails to detect the world, it will creaete a new world without consent."
+		};
 	}
 
 }

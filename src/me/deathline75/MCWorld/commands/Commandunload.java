@@ -8,24 +8,23 @@ import org.bukkit.entity.Player;
 import me.deathline75.main.IMCWorldCommand;
 import me.deathline75.main.PlayerWorld;
 
-public class Commandunloadnosave implements IMCWorldCommand{
+public class Commandunload implements IMCWorldCommand{
 
 	@Override
 	public boolean executeCMD(CommandSender sender, String label, String[] args) {
 		if(args.length == 0){
 			try{
-			Bukkit.getServer().unloadWorld(PlayerWorld.getWorld(sender), false);
+			Bukkit.getServer().unloadWorld(PlayerWorld.getWorld(sender), true);
 			PlayerWorld.removeSender(sender);
-			sender.sendMessage(ChatColor.RED + "You have unloaded th" +
-					"e world without saving the world.");
+			sender.sendMessage(ChatColor.RED + "You have unloaded the world.");
 			}
 			catch(NullPointerException e){
 				sender.sendMessage(ChatColor.RED + "You have not selected a world!");
 			}
 		}
 		if(args.length == 1){
-			Bukkit.getServer().unloadWorld(Bukkit.getServer().getWorld(args[0]),false);
-			sender.sendMessage(ChatColor.RED + "You have unloaded the world without saving the world.");
+			Bukkit.getServer().unloadWorld(Bukkit.getServer().getWorld(args[0]), true);
+			sender.sendMessage(ChatColor.RED + "You have unloaded the world.");
 		}
 		if(args.length > 1){
 			try{
@@ -39,8 +38,8 @@ public class Commandunloadnosave implements IMCWorldCommand{
 						worldname += (s);
 					}
 				}
-				Bukkit.getServer().unloadWorld(Bukkit.getServer().getWorld(worldname), false);
-				player.sendMessage(ChatColor.RED + "You have unloaded the world without saving the world.");
+				Bukkit.getServer().unloadWorld(Bukkit.getServer().getWorld(worldname), true);
+				player.sendMessage(ChatColor.RED + "You have unloaded the world.");
 			}
 			catch(Exception e){
 				sender.sendMessage(ChatColor.RED + "Error has occured. Please ensure you have the world loaded.");
@@ -53,9 +52,9 @@ public class Commandunloadnosave implements IMCWorldCommand{
 	public String[] getHelp() {
 		// TODO Auto-generated method stub
 		return new String[]{
-			ChatColor.GRAY + "Usage: /mcw unloadnosave (World Name)", 
-			ChatColor.DARK_AQUA + "Description: Unloads the world without saving it.",
-			ChatColor.DARK_RED + "Notes: Ensure the world is loaded before unloading it."
+			ChatColor.GRAY + "Usage: /mcw unload (World Name)", 
+			ChatColor.DARK_AQUA + "Description: Unloads a world",
+			ChatColor.DARK_RED + "Notes: Ensure the world is loaded before unloading the world."
 		};
 	}
 
