@@ -1,17 +1,20 @@
 package me.deathline75.main;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import me.deathline75.MCWorld.commands.Commandjoinall;
 import me.deathline75.MCWorld.commands.Commandkickallworld;
+import me.deathline75.MCWorld.commands.Commandlist;
 import me.deathline75.MCWorld.commands.Commandplayerlist;
 import me.deathline75.MCWorld.commands.Commandprops;
 import me.deathline75.MCWorld.commands.Commandselect;
 import me.deathline75.MCWorld.commands.Commandunloadnosave;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -50,7 +53,7 @@ public class NewMCWorldListener extends MCWorldListener{
 		}
 		
 		if(label.equalsIgnoreCase("listwarp")){
-			sender.sendMessage(ChatColor.GOLD + "List of avaliable warps: [World / Co-ordidates X / Y / Z / Yaw / Pitch]");
+			sender.sendMessage(ChatColor.GOLD + "List of avaliable warps: [World/Co-ordidates X/Y/Z/Yaw/Pitch]");
 			sender.sendMessage(ChatColor.GRAY + "---");
 			for(String warpname: MCWorld.props.getKeys(true)){
 				String[] s = MCWorld.props.getString(warpname).split(",");
@@ -59,7 +62,7 @@ public class NewMCWorldListener extends MCWorldListener{
 				Double z = Double.parseDouble(s[3]);
 				Double yaw = Double.parseDouble(s[4]);
 				Double pitch = Double.parseDouble(s[5]);
-				sender.sendMessage((ChatColor.GREEN + warpname) + ChatColor.AQUA + ": " + s[0] + " / " + x.intValue() + " / " + y.intValue() + " / " + z.intValue() +" / " + yaw.intValue() + " / " + pitch.intValue());
+				sender.sendMessage((ChatColor.GREEN + warpname) + ChatColor.AQUA + ": " + s[0] + "/" + x.intValue() + "/" + y.intValue() + "/" + z.intValue() +"/" + yaw.intValue() + "/" + pitch.intValue());
 				sender.sendMessage(ChatColor.GRAY + "---");
 			}
 		}
@@ -111,19 +114,6 @@ public class NewMCWorldListener extends MCWorldListener{
 			}
 			else{
 				sender.sendMessage("You are not in Minecraft!");
-			}
-			return true;
-		}
-		if(label.equalsIgnoreCase("list")){
-			if(args.length == 0){
-				Iterator<World> i = mcworld.getServer().getWorlds().iterator();
-				String Worlds = "|";
-				while(i.hasNext()){
-					Worlds += (" " +i.next().getName() + " |");
-				}
-				
-				sender.sendMessage("Currently Loaded Worlds:");
-				sender.sendMessage(Worlds);				
 			}
 			return true;
 		}
@@ -224,10 +214,13 @@ public class NewMCWorldListener extends MCWorldListener{
 	static{
 		commandList.put("props", new Commandprops());
 		commandList.put("select", new Commandselect());
+		commandList.put("create", new Commandselect());
+		commandList.put("load", new Commandselect());
 		commandList.put("unloadnosave", new Commandunloadnosave());
 		commandList.put("playerlist", new Commandplayerlist());
 		commandList.put("kickallworld", new Commandkickallworld());
 		commandList.put("joinall", new Commandjoinall());
+		commandList.put("list", new Commandlist());
 	}
 	
 }

@@ -25,7 +25,7 @@ public class Commandselect implements IMCWorldCommand{
 	
 	@Override
 	public boolean executeCMD(CommandSender sender, String label, String[] args) {
-		if(label.equalsIgnoreCase("select")){
+		if(label.equalsIgnoreCase("select") || label.equalsIgnoreCase("create") || label.equalsIgnoreCase("load")){
 			if(args.length == 0){
 				try{
 					sender.sendMessage((ChatColor.GREEN + "Currently selected world: " )+ ChatColor.YELLOW + PlayerWorld.getWorld(sender).getName());
