@@ -14,16 +14,21 @@ public class Commandtp implements IMCWorldCommand {
 	public boolean executeCMD(CommandSender sender, String label, String[] args) {
 		if(args.length == 0){
 			if(sender instanceof Player){
-				try{
-					Player player = (Player)sender;
-					if(PlayerWorld.getWorld(sender).getPlayers().contains(sender)){
+				if((sender.hasPermission("mcw.command.tp") || sender.hasPermission("mcw.command.tp.world."+PlayerWorld.getWorld(sender).getName())) && !sender.hasPermission("mcw.command.tp.world.!" + PlayerWorld.getWorld(sender))){
+					try{
+						Player player = (Player)sender;
+						if(PlayerWorld.getWorld(sender).getPlayers().contains(sender)){
+							player.teleport(PlayerWorld.getWorld(sender).getSpawnLocation());
+						}
 						player.teleport(PlayerWorld.getWorld(sender).getSpawnLocation());
 					}
-					player.teleport(PlayerWorld.getWorld(sender).getSpawnLocation());
+					catch(NullPointerException e){
+						sender.sendMessage(ChatColor.RED + "You have not selected a world!");
+					}
+				}else{
+					sender.sendMessage(ChatColor.DARK_RED + "You do not have permission to use this command.");
 				}
-				catch(NullPointerException e){
-					sender.sendMessage(ChatColor.RED + "You have not selected a world!");
-				}
+
 			}else{
 				sender.sendMessage("You are not in Minecraft!");
 			}
@@ -31,11 +36,16 @@ public class Commandtp implements IMCWorldCommand {
 		if(args.length == 1){
 			if(sender instanceof Player){
 				try{
+					if((sender.hasPermission("mcw.command.tp") || sender.hasPermission("mcw.command.tp.world."+args[0])) && !sender.hasPermission("mcw.command.tp.world.!" + args[0])){
 					Player player = (Player)sender;
 					player.teleport(Bukkit.getServer().getWorld(args[0]).getSpawnLocation());
+					}
+					else{
+						sender.sendMessage(ChatColor.DARK_RED + "You do not have permission to use this command.");
+					}
 				}
 				catch(Exception e){
-					sender.sendMessage(ChatColor.RED + "Error has occured. Please ensure you have the world loaded.");
+					sender.sendMessage(ChatColor.DARK_RED + "Error has occured. Please ensure you have the world loaded.");
 				}
 			}else{
 				sender.sendMessage("You are not in Minecraft!");
@@ -54,7 +64,12 @@ public class Commandtp implements IMCWorldCommand {
 							worldname += (s);
 						}
 					}
+					if((sender.hasPermission("mcw.command.tp") || sender.hasPermission("mcw.command.tp.world."+worldname.replace(' ', '_'))) && !sender.hasPermission("mcw.command.tp.world.!" + worldname.replace(' ', '_'))){
 					player.teleport(Bukkit.getServer().getWorld(worldname).getSpawnLocation());
+					}
+					else{
+						sender.sendMessage(ChatColor.DARK_RED + "You do not have permission to use this command.");
+					}
 				}
 				catch(Exception e){
 					sender.sendMessage(ChatColor.RED + "Error has occured. Please ensure you have the world loaded.");
