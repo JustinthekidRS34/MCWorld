@@ -3,6 +3,7 @@ package me.deathline75.main;
 import java.util.HashMap;
 import java.util.Map;
 
+import me.deathline75.MCWorld.commands.Commandcreatef;
 import me.deathline75.MCWorld.commands.Commandhelp;
 import me.deathline75.MCWorld.commands.Commandjoinall;
 import me.deathline75.MCWorld.commands.Commandkickallworld;
@@ -70,6 +71,7 @@ public class NewMCWorldListener extends MCWorldListener{
 		commandList.put("unload", new Commandunload());
 		commandList.put("tp", new Commandtp());
 		commandList.put("help", new Commandhelp());
+		commandList.put("createf", new Commandcreatef());
 	}
 	
 }
