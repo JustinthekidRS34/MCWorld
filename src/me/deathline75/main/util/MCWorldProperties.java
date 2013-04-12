@@ -5,6 +5,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Properties;
 
+/*
+ * Redundant class. Really.
+ * Will make use of it soon. But replaced with Bukkit YAMLConfigurator.
+ */
+
+
 public class MCWorldProperties extends Properties{
 
 	/**

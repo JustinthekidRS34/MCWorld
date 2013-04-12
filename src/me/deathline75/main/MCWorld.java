@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Java15Compat;
@@ -88,7 +89,7 @@ public class MCWorld extends JavaPlugin{
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
 		if(label.equalsIgnoreCase("mcw")){
 			if(args.length > 0){
-				if(sender.isOp()){
+				if(sender.isOp() || sender.hasPermission(new Permission("mcw.command." + args[0])) || sender.hasPermission("mcw.command.*")){
 					String label2 = args[0];
 					newlistener.onCommand(sender, label2 ,(String[])Java15Compat.Arrays_copyOfRange(args, 1, args.length), command);
 				}
