@@ -10,32 +10,26 @@ import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.WorldType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.util.Java15Compat;
 
 import me.deathline75.main.IMCWorldCommand;
 import me.deathline75.main.MCWorld;
 import me.deathline75.main.PlayerWorld;
 
-public class Commandselect implements IMCWorldCommand{
+public class Commandcreatef implements IMCWorldCommand{
 
 	public static Map<String, Object> properties = new HashMap<String, Object>();
 	
 	@Override
-	public boolean executeCMD(CommandSender sender, String label, String[] args) {
-		if(label.equalsIgnoreCase("select") || label.equalsIgnoreCase("create") || label.equalsIgnoreCase("load")){
-			if(args.length == 0){
-				try{
-					sender.sendMessage((ChatColor.GREEN + "Currently selected world: " )+ ChatColor.YELLOW + PlayerWorld.getWorld(sender).getName());
-					return true;
-				}
-				catch(NullPointerException e){
-					sender.sendMessage(ChatColor.RED + "You have not selected a world yet!");
-					return false;
-				}
-			}
+	public boolean executeCMD(CommandSender sender, String label, String[] arg) {
+		String[] args = (String[])Java15Compat.Arrays_copyOfRange(arg, 1, arg.length);
+		try{
 			if(args.length != 0){
 				if(args.length != 1){
 					String worldname = "";
@@ -47,7 +41,13 @@ public class Commandselect implements IMCWorldCommand{
 							worldname += (s);
 						}
 					}
-					PlayerWorld playerworld = new PlayerWorld(sender, Bukkit.getServer().createWorld(new WorldCreator(worldname)));
+					WorldCreator fworld = new WorldCreator(worldname);
+					fworld.type(WorldType.FLAT);
+					Bukkit.unloadWorld(worldname, true);
+					Bukkit.createWorld(fworld);
+					Bukkit.getWorld(worldname).setMetadata("generatorOptions", new FixedMetadataValue(MCWorld.mcworld, arg[0]));
+					Bukkit.getWorld(worldname).setMetadata("generatorName",  new FixedMetadataValue(MCWorld.mcworld, "flat"));
+					PlayerWorld playerworld = new PlayerWorld(sender, Bukkit.createWorld(fworld));
 					playerworld.toString();
 					World world = Bukkit.getServer().getWorld(worldname);
 					world.getGenerator();
@@ -118,7 +118,10 @@ public class Commandselect implements IMCWorldCommand{
 				sender.sendMessage(ChatColor.GREEN + "You have selected and loaded the world.");
 				return true;
 			}
-		}
+		}catch(Exception e){
+			sender.sendMessage("An unexpected error has occurred while creating this superflat world. Please check your generator options.");
+			return false;
+		}		
 		return false;
 	}
 	
@@ -140,10 +143,9 @@ public class Commandselect implements IMCWorldCommand{
 	public String[] getHelp() {
 		// TODO Auto-generated method stub
 		return new String[]{
-			ChatColor.GRAY + "Usage: /mcw select|load|create [World Name]", 
-			ChatColor.DARK_AQUA + "Description: Loads/Creates the world and selects the world",
-			ChatColor.DARK_RED + "Notes: If it fails to detect the world, it will create a new world without consent."
+			ChatColor.GRAY + "Usage: /mcw createf [Generator Options] [World Name]", 
+			ChatColor.DARK_AQUA + "Description: Loads/Creates a superflat world with specified generator options and selects the world",
+			ChatColor.DARK_RED + "Notes: This is incredibliy unstable due to Bukkit not implementing the feature."
 		};
 	}
-
 }

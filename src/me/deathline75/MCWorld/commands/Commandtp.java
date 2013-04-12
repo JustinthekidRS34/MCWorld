@@ -14,7 +14,7 @@ public class Commandtp implements IMCWorldCommand {
 	public boolean executeCMD(CommandSender sender, String label, String[] args) {
 		if(args.length == 0){
 			if(sender instanceof Player){
-				if((sender.hasPermission("mcw.command.tp") || sender.hasPermission("mcw.command.tp.world."+PlayerWorld.getWorld(sender).getName())) && !sender.hasPermission("mcw.command.tp.world.!" + PlayerWorld.getWorld(sender))){
+				if(sender.isOp() || ((sender.hasPermission("mcw.command.tp") || sender.hasPermission("mcw.command.tp.world."+PlayerWorld.getWorld(sender).getName())) && !sender.hasPermission("mcw.command.tp.world.!" + PlayerWorld.getWorld(sender)))){
 					try{
 						Player player = (Player)sender;
 						if(PlayerWorld.getWorld(sender).getPlayers().contains(sender)){
@@ -36,7 +36,7 @@ public class Commandtp implements IMCWorldCommand {
 		if(args.length == 1){
 			if(sender instanceof Player){
 				try{
-					if((sender.hasPermission("mcw.command.tp") || sender.hasPermission("mcw.command.tp.world."+args[0])) && !sender.hasPermission("mcw.command.tp.world.!" + args[0])){
+					if(sender.isOp() || ((sender.hasPermission("mcw.command.tp") || sender.hasPermission("mcw.command.tp.world."+args[0])) && !sender.hasPermission("mcw.command.tp.world.!" + args[0]))){
 					Player player = (Player)sender;
 					player.teleport(Bukkit.getServer().getWorld(args[0]).getSpawnLocation());
 					}
@@ -64,7 +64,7 @@ public class Commandtp implements IMCWorldCommand {
 							worldname += (s);
 						}
 					}
-					if((sender.hasPermission("mcw.command.tp") || sender.hasPermission("mcw.command.tp.world."+worldname.replace(' ', '_'))) && !sender.hasPermission("mcw.command.tp.world.!" + worldname.replace(' ', '_'))){
+					if(sender.isOp() || ((sender.hasPermission("mcw.command.tp") || sender.hasPermission("mcw.command.tp.world."+worldname.replace(' ', '_'))) && !sender.hasPermission("mcw.command.tp.world.!" + worldname.replace(' ', '_')))){
 					player.teleport(Bukkit.getServer().getWorld(worldname).getSpawnLocation());
 					}
 					else{

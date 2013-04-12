@@ -16,7 +16,7 @@ public class Commandwarp implements IMCWorldCommand {
 	@Override
 	public boolean executeCMD(CommandSender sender, String label, String[] args) {
 		if(sender instanceof Player){
-			if((sender.hasPermission("mcw.command.warp") || sender.hasPermission("mcw.command.warp."+PlayerWorld.getWorld(sender).getName())) && !sender.hasPermission("mcw.command.warp.!" + PlayerWorld.getWorld(sender))){
+			if(sender.isOp() || ((sender.hasPermission("mcw.command.warp") || sender.hasPermission("mcw.command.warp."+PlayerWorld.getWorld(sender).getName())) && !sender.hasPermission("mcw.command.warp.!" + PlayerWorld.getWorld(sender)))){
 				Player player = (Player)sender;
 				if(args.length == 1){
 					String[] stuff = MCWorld.props.getString(args[0], "").split(",");
