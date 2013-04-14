@@ -31,8 +31,9 @@ public class Commandcreatef implements IMCWorldCommand{
 		String[] args = (String[])Java15Compat.Arrays_copyOfRange(arg, 1, arg.length);
 		try{
 			if(args.length != 0){
+				String worldname = "";
 				if(args.length != 1){
-					String worldname = "";
+					worldname = "";
 					for(String s:args){
 						if(s != args[args.length - 1]){
 							worldname += (s + " ");
@@ -41,16 +42,19 @@ public class Commandcreatef implements IMCWorldCommand{
 							worldname += (s);
 						}
 					}
+				}
+				else{
+					worldname = args[0];
+				}
 					WorldCreator fworld = new WorldCreator(worldname);
 					fworld.type(WorldType.FLAT);
-					Bukkit.unloadWorld(worldname, true);
-					Bukkit.createWorld(fworld);
-					Bukkit.getWorld(worldname).setMetadata("generatorOptions", new FixedMetadataValue(MCWorld.mcworld, arg[0]));
-					Bukkit.getWorld(worldname).setMetadata("generatorName",  new FixedMetadataValue(MCWorld.mcworld, "flat"));
-					PlayerWorld playerworld = new PlayerWorld(sender, Bukkit.createWorld(fworld));
+					fworld.generator(arg[0]);
+					PlayerWorld playerworld = new PlayerWorld(sender, Bukkit.getServer().createWorld(fworld));
 					playerworld.toString();
 					World world = Bukkit.getServer().getWorld(worldname);
-					world.getGenerator();
+					FixedMetadataValue generator = new FixedMetadataValue(MCWorld.mcworld, 
+							arg[0]);
+					world.setMetadata("generatorOptions", generator);
 					try {
 						MCWorld.getPropertiesFile().load(MCWorld.getProperties());
 						if(MCWorld.getPropertiesFile().isConfigurationSection(worldname)){
@@ -97,28 +101,12 @@ public class Commandcreatef implements IMCWorldCommand{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
-				}
-				else{
-					PlayerWorld playerworld = new PlayerWorld(sender, Bukkit.getServer().createWorld(new WorldCreator(args[0])));
-					playerworld.toString();
-					if(MCWorld.getPropertiesFile().isConfigurationSection(args[0])){
-						
-					}
-					else{
-						MCWorld.getPropertiesFile().createSection(args[0], properties);
-						try {
-							MCWorld.getPropertiesFile().save(MCWorld.getProperties());
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}
+				
 				sender.sendMessage(ChatColor.GREEN + "You have selected and loaded the world.");
 				return true;
 			}
 		}catch(Exception e){
+			e.printStackTrace();
 			sender.sendMessage("An unexpected error has occurred while creating this superflat world. Please check your generator options.");
 			return false;
 		}		

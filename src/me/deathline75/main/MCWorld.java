@@ -18,7 +18,7 @@ import org.bukkit.util.Java15Compat;
 public class MCWorld extends JavaPlugin{
 	
 	public final Logger log = Logger.getLogger("Minecraft");
-	public static MCWorld mcworld;
+	public static MCWorld mcworld = new MCWorld();
 	private MCWorldListener listener = new MCWorldListener(this);
 	private NewMCWorldListener newlistener = new NewMCWorldListener(this);
 	
