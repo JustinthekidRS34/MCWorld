@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
 import org.bukkit.World;
+import org.bukkit.World.Environment;
 import org.bukkit.WorldCreator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -37,8 +38,9 @@ public class Commandselect implements IMCWorldCommand{
 				}
 			}
 			if(args.length != 0){
+				String worldname;
 				if(args.length != 1){
-					String worldname = "";
+					worldname = "";
 					for(String s:args){
 						if(s != args[args.length - 1]){
 							worldname += (s + " ");
@@ -47,7 +49,22 @@ public class Commandselect implements IMCWorldCommand{
 							worldname += (s);
 						}
 					}
-					PlayerWorld playerworld = new PlayerWorld(sender, Bukkit.getServer().createWorld(new WorldCreator(worldname)));
+				}
+				else{
+					worldname = args[0];
+				}
+					WorldCreator normal = new WorldCreator(worldname);
+					PlayerWorld playerworld = new PlayerWorld(sender, Bukkit.getServer().createWorld(normal));
+					WorldCreator nether = new WorldCreator(worldname + "_nether");
+					nether.seed(normal.seed());
+					nether.environment(Environment.NETHER);
+					nether.generateStructures(normal.generateStructures());
+					Bukkit.getServer().createWorld(nether);
+					WorldCreator the_end = new WorldCreator(worldname + "_the_end");
+					the_end.seed(normal.seed());
+					the_end.environment(Environment.THE_END);
+					the_end.generateStructures(normal.generateStructures());
+					Bukkit.getServer().createWorld(the_end);
 					playerworld.toString();
 					World world = Bukkit.getServer().getWorld(worldname);
 					world.getGenerator();
@@ -97,30 +114,12 @@ public class Commandselect implements IMCWorldCommand{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
+					sender.sendMessage(ChatColor.GREEN + "You have selected and loaded the world.");
+					return true;
 				}
-				else{
-					PlayerWorld playerworld = new PlayerWorld(sender, Bukkit.getServer().createWorld(new WorldCreator(args[0])));
-					playerworld.toString();
-					if(MCWorld.getPropertiesFile().isConfigurationSection(args[0])){
-						
-					}
-					else{
-						MCWorld.getPropertiesFile().createSection(args[0], properties);
-						try {
-							MCWorld.getPropertiesFile().save(MCWorld.getProperties());
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}
-				sender.sendMessage(ChatColor.GREEN + "You have selected and loaded the world.");
-				return true;
 			}
-		}
 		return false;
-	}
+		}
 	
 	static{
 		properties.put("ticksperanimalspawn", 400);
