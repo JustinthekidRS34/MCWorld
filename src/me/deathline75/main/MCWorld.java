@@ -4,12 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import me.deathline75.MCWorld.generator.FlatlandsGenerator;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -84,6 +87,10 @@ public class MCWorld extends JavaPlugin{
 		return propertiesFile;
 	}
 	
+	@Override
+	public ChunkGenerator getDefaultWorldGenerator(String worldName, String uid){
+		return new FlatlandsGenerator();
+	}
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args){

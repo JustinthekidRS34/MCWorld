@@ -15,9 +15,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Java15Compat;
 
+import me.deathline75.MCWorld.generator.FlatlandsGenerator;
 import me.deathline75.main.IMCWorldCommand;
 import me.deathline75.main.MCWorld;
 import me.deathline75.main.PlayerWorld;
@@ -48,13 +48,13 @@ public class Commandcreatef implements IMCWorldCommand{
 				}
 					WorldCreator fworld = new WorldCreator(worldname);
 					fworld.type(WorldType.FLAT);
-					fworld.generator(arg[0]);
+					FlatlandsGenerator.setGeneratorOptions(arg[0]);
+					sender.sendMessage(ChatColor.DARK_AQUA + "Creating World... This will lagg the server. A lot.");
+					fworld.generator("MCWorld");
 					PlayerWorld playerworld = new PlayerWorld(sender, Bukkit.getServer().createWorld(fworld));
 					playerworld.toString();
 					World world = Bukkit.getServer().getWorld(worldname);
-					FixedMetadataValue generator = new FixedMetadataValue(MCWorld.mcworld, 
-							arg[0]);
-					world.setMetadata("generatorOptions", generator);
+
 					try {
 						MCWorld.getPropertiesFile().load(MCWorld.getProperties());
 						if(MCWorld.getPropertiesFile().isConfigurationSection(worldname)){
@@ -132,8 +132,9 @@ public class Commandcreatef implements IMCWorldCommand{
 		// TODO Auto-generated method stub
 		return new String[]{
 			ChatColor.GRAY + "Usage: /mcw createf [Generator Options] [World Name]", 
+			ChatColor.DARK_AQUA + "Generator Options: Biome ; Layer1 x Thickness . Layer2 x Thickness... ; village.mineshaft.decoration.stronghold.biome_1.dungeon.lake.lava_lake",
 			ChatColor.DARK_AQUA + "Description: Loads/Creates a superflat world with specified generator options and selects the world",
-			ChatColor.DARK_RED + "Notes: This is incredibliy unstable due to Bukkit not implementing the feature."
+			ChatColor.DARK_RED + "Notes: This is incredibliy unstable due to Bukkit not implementing the feature. Also, ignore spaces for Generator Options. "
 		};
 	}
 }
