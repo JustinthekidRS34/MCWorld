@@ -17,6 +17,7 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Java15Compat;
+import org.mcstats.Metrics;
 
 public class MCWorld extends JavaPlugin{
 	
@@ -64,6 +65,14 @@ public class MCWorld extends JavaPlugin{
 				| InvalidConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		log.info("[MCWorld] Sending client info...");
+		try {
+		    Metrics metrics = new Metrics(this);
+		    metrics.start();
+		    log.info("[MCWorld] Metrics have started logging infomation! :D");
+		} catch (IOException e) {
+		    // Failed to submit the stats :-(
 		}
 	}
 	
