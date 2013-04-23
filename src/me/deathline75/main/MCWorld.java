@@ -27,10 +27,12 @@ public class MCWorld extends JavaPlugin{
 	private NewMCWorldListener newlistener = new NewMCWorldListener(this);
 	
 	private static File fileforwarps ;
-	private static File propertiesFile;
+	private static File worldPropertiesFile;
+	private static File MCWorldPropsFile;
 	
 	private static FileConfiguration world;
 	public static FileConfiguration props;
+	public static FileConfiguration mcworldProps;
 	
 	@Override
 	public void onEnable(){
@@ -39,10 +41,19 @@ public class MCWorld extends JavaPlugin{
 		this.getServer().getPluginManager().registerEvents(listener, this);
 		this.getServer().getPluginManager().registerEvents(newlistener, this);
 		setFileforwarps(new File(getDataFolder(), "warps.yml"));
-		propertiesFile = new File(getDataFolder(), "world.yml");
-		if(!propertiesFile.exists()){
+		worldPropertiesFile = new File(getDataFolder(), "world.yml");
+		MCWorldPropsFile = new File(getDataFolder(), "config.yml");
+		if(!MCWorldPropsFile.exists()){
+		    try {
+			MCWorldPropsFile.createNewFile();
+		    } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		    }
+		}
+		if(!worldPropertiesFile.exists()){
 			try {
-				propertiesFile.createNewFile();
+				worldPropertiesFile.createNewFile();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -56,10 +67,11 @@ public class MCWorld extends JavaPlugin{
 				e.printStackTrace();
 			}
 		}
-		world = YamlConfiguration.loadConfiguration(propertiesFile);
+		world = YamlConfiguration.loadConfiguration(worldPropertiesFile);
 		props = YamlConfiguration.loadConfiguration(getFileforwarps());
+		mcworldProps = YamlConfiguration.loadConfiguration(MCWorldPropsFile);
 		try {
-			world.load(propertiesFile);
+			world.load(worldPropertiesFile);
 			props.load(getFileforwarps());
 		} catch (IOException
 				| InvalidConfigurationException e) {
@@ -81,7 +93,7 @@ public class MCWorld extends JavaPlugin{
 		PluginDescriptionFile pdf = this.getDescription();
 		log.info("[MCWorld] v." + pdf.getVersion() + " has been disabled.");
 		try {
-			world.save(propertiesFile);
+			world.save(worldPropertiesFile);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -93,7 +105,7 @@ public class MCWorld extends JavaPlugin{
 	}
 	
 	public static File getProperties(){
-		return propertiesFile;
+		return worldPropertiesFile;
 	}
 	
 	@Override
@@ -118,7 +130,7 @@ public class MCWorld extends JavaPlugin{
 				sender.sendMessage(ChatColor.YELLOW + "-------------------------");
 				sender.sendMessage(ChatColor.GREEN + "MCWorld Version " + pdf.getVersion());
 				sender.sendMessage("Avaliable Commands for MCWorld");
-				sender.sendMessage(ChatColor.GRAY + "| select | unload | tp | props | help | list | setwarp | warp | unloadnosave | playerlist | kickallworld | listwarp | help |");
+				sender.sendMessage(ChatColor.GRAY + "| select | unload | tp | tpI | props | help | list | setwarp | warp | unloadnosave | playerlist | kickallworld | listwarp | help | createf |");
 				sender.sendMessage(ChatColor.YELLOW + "-------------------------");
 			}
 			return true;

@@ -1,12 +1,12 @@
 package me.deathline75.MCWorld.commands;
 
+import me.deathline75.main.IMCWorldCommand;
+import me.deathline75.main.PlayerWorld;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import me.deathline75.main.IMCWorldCommand;
-import me.deathline75.main.PlayerWorld;
 
 public class Commandtp implements IMCWorldCommand {
 
