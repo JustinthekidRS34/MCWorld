@@ -5,6 +5,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import me.deathline75.MCWorld.generator.FlatlandsGenerator;
+import me.deathline75.main.IMCWorldCommand;
+import me.deathline75.main.MCWorld;
+import me.deathline75.main.PlayerWorld;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
@@ -16,11 +21,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.util.Java15Compat;
-
-import me.deathline75.MCWorld.generator.FlatlandsGenerator;
-import me.deathline75.main.IMCWorldCommand;
-import me.deathline75.main.MCWorld;
-import me.deathline75.main.PlayerWorld;
 
 public class Commandcreatef implements IMCWorldCommand{
 
@@ -49,7 +49,6 @@ public class Commandcreatef implements IMCWorldCommand{
 					WorldCreator fworld = new WorldCreator(worldname);
 					fworld.type(WorldType.FLAT);
 					FlatlandsGenerator.setGeneratorOptions(arg[0]);
-					sender.sendMessage(ChatColor.DARK_AQUA + "Creating World... This will lagg the server. A lot.");
 					fworld.generator("MCWorld");
 					PlayerWorld playerworld = new PlayerWorld(sender, Bukkit.getServer().createWorld(fworld));
 					playerworld.toString();
