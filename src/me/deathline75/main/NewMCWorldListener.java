@@ -68,9 +68,7 @@ public class NewMCWorldListener extends MCWorldListener {
 			    , 0
 			    , 72
 			    , 0);
-		    ta.findOrCreate(tploc);
-		    e.setTo(ta.findOrCreate(tploc));
-			System.out.println(tploc);
+		    e.setTo(tploc);
 	    }else if(e.getCause() == TeleportCause.NETHER_PORTAL){
 		    Location tploc = new Location
 			    (Bukkit.getWorld(e.getPlayer().getWorld().getName() + "_nether")
@@ -79,7 +77,6 @@ public class NewMCWorldListener extends MCWorldListener {
 			    , e.getPlayer().getLocation().getZ()/8);
 		    ta.findOrCreate(tploc);
 		    e.setTo(ta.findOrCreate(tploc));
-			System.out.println(tploc);
 	    }
 	}
 	else if(e.getPlayer().getWorld().getEnvironment() == Environment.NETHER){
@@ -89,7 +86,6 @@ public class NewMCWorldListener extends MCWorldListener {
 		    , e.getPlayer().getLocation().getZ()*8);
 	   ta.findOrCreate(tploc);
 	    e.setTo(ta.findOrCreate(tploc));
-		System.out.println(tploc);
 	}
 	else if(e.getPlayer().getWorld().getEnvironment() == Environment.THE_END){
 	   Location tploc = (Bukkit.getWorld(e.getPlayer().getWorld().getName().substring(0, e.getPlayer().getWorld().getName().length() - 8)).getSpawnLocation());
@@ -109,13 +105,11 @@ public class NewMCWorldListener extends MCWorldListener {
 	    ta.findOrCreate(tploc);
 	    e.setTo(ta.findOrCreate(tploc));
 	    e.getEntity().teleport(tploc);
-		System.out.println(tploc);
 	}
 	else if(e.getEntity().getWorld().getEnvironment() == Environment.NETHER){
 	    Location tploc = new Location(Bukkit.getWorld(e.getEntity().getWorld().getName().substring(0, e.getEntity().getWorld().getName().length() - 7)), e.getTo().getX(), e.getTo().getY(), e.getTo().getZ());
 	    ta.findOrCreate(tploc);
 	    e.setTo(ta.findOrCreate(tploc));
-		System.out.println(tploc);
 	}
 
 	e.setPortalTravelAgent(ta);
