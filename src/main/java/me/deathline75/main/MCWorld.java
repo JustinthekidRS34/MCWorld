@@ -1,14 +1,23 @@
 package me.deathline75.main;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import me.deathline75.MCWorld.generator.FlatlandsGenerator;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Difficulty;
+import org.bukkit.World;
+import org.bukkit.World.Environment;
+import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -34,6 +43,8 @@ public class MCWorld extends JavaPlugin{
 	public static FileConfiguration props;
 	public static FileConfiguration mcworldProps;
 	
+	public static Map<String, Object> properties = new HashMap<String, Object>();
+	
 	@Override
 	public void onEnable(){
 		PluginDescriptionFile pdf = this.getDescription();
@@ -46,7 +57,75 @@ public class MCWorld extends JavaPlugin{
 		if(!MCWorldPropsFile.exists()){
 		    try {
 			MCWorldPropsFile.createNewFile();
-		    } catch (IOException e) {
+			mcworldProps.load(MCWorldPropsFile);
+			mcworldProps.addDefault("loadWorldsOnStart", null);
+			if(mcworldProps.getString("loadWorldsOnStart") != null){
+			    for(String worldname: mcworldProps.getString("loadWorldsOnStart").split(",")){
+				WorldCreator normal = new WorldCreator(worldname);
+				Bukkit.getServer().createWorld(normal);
+				WorldCreator nether = new WorldCreator(worldname + "_nether");
+				nether.seed(normal.seed());
+				nether.environment(Environment.NETHER);
+				nether.generateStructures(normal.generateStructures());
+				Bukkit.getServer().createWorld(nether);
+				WorldCreator the_end = new WorldCreator(worldname + "_the_end");
+				the_end.seed(normal.seed());
+				the_end.environment(Environment.THE_END);
+				the_end.generateStructures(normal.generateStructures());
+				Bukkit.getServer().createWorld(the_end);
+				World world = Bukkit.getServer().getWorld(worldname);
+				world.getGenerator();
+				try {
+					MCWorld.getPropertiesFile().load(MCWorld.getProperties());
+					if(MCWorld.getPropertiesFile().isConfigurationSection(worldname)){
+						FileConfiguration f = MCWorld.getPropertiesFile();
+						ConfigurationSection cs = f.getConfigurationSection(worldname);
+						try {
+							f.load(MCWorld.getProperties());
+						} catch (FileNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InvalidConfigurationException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						world.setSpawnFlags(cs.getBoolean("mobspawn", true), cs.getBoolean("animalspawn", true));
+						world.setAnimalSpawnLimit(cs.getInt("animalspawnlimit", 15));
+						world.setAutoSave(cs.getBoolean("autosave", true));
+						world.setDifficulty(Difficulty.getByValue(cs.getInt("difficulty", 1)));
+						world.setKeepSpawnInMemory(cs.getBoolean("keepspawninmemory", true));
+						world.setMonsterSpawnLimit(cs.getInt("mobspawnlimit", 70));
+						world.setPVP(cs.getBoolean("pvp", false));
+						world.setTicksPerAnimalSpawns(cs.getInt("ticksperanimalspawn", 400));
+						world.setTicksPerMonsterSpawns(cs.getInt("tickspermobspawn", 1));
+					}
+					else{
+						MCWorld.getPropertiesFile().createSection(worldname, properties);
+						try {
+							MCWorld.getPropertiesFile().save(MCWorld.getProperties());
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvalidConfigurationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			    }
+			}
+			    
+			mcworldProps.save(MCWorldPropsFile);
+		    } catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		    }
@@ -73,8 +152,7 @@ public class MCWorld extends JavaPlugin{
 		try {
 			world.load(worldPropertiesFile);
 			props.load(getFileforwarps());
-		} catch (IOException
-				| InvalidConfigurationException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -144,5 +222,18 @@ public class MCWorld extends JavaPlugin{
 
 	public static void setFileforwarps(File fileforwarps) {
 		MCWorld.fileforwarps = fileforwarps;
+	}
+	static{
+		properties.put("ticksperanimalspawn", 400);
+		properties.put("tickspermobspawn", 1);
+		properties.put("mobspawn", true);
+		properties.put("animalspawn", true);
+		properties.put("mobspawnlimit", 70);
+		properties.put("animalspawnlimit", 15);
+		properties.put("difficulty", 1);
+		properties.put("fulltime", 1);
+		properties.put("pvp", false);
+		properties.put("autosave", true);
+		properties.put("keepspawninmemory", true);
 	}
 }

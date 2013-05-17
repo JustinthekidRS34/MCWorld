@@ -7,6 +7,7 @@ import me.deathline75.MCWorld.commands.Commandcreatef;
 import me.deathline75.MCWorld.commands.Commandhelp;
 import me.deathline75.MCWorld.commands.Commandjoinall;
 import me.deathline75.MCWorld.commands.Commandkickallworld;
+import me.deathline75.MCWorld.commands.Commandkicktoworld;
 import me.deathline75.MCWorld.commands.Commandlist;
 import me.deathline75.MCWorld.commands.Commandlistwarp;
 import me.deathline75.MCWorld.commands.Commandplayerlist;
@@ -149,6 +150,7 @@ public class NewMCWorldListener extends MCWorldListener {
 	commandList.put("tp", new Commandtp());
 	commandList.put("help", new Commandhelp());
 	commandList.put("createf", new Commandcreatef());
+	commandList.put("kicktoworld", new Commandkicktoworld());
     }
 
 }

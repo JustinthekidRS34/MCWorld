@@ -21,6 +21,7 @@ public class Commandtpi implements IMCWorldCommand {
 						player.teleport(PlayerWorld.getWorld(sender).getSpawnLocation());
 					}
 					player.teleport(PlayerWorld.getWorld(sender).getSpawnLocation());
+					Bukkit.savePlayers();
 				}
 				catch(NullPointerException e){
 					sender.sendMessage(ChatColor.RED + "You have not selected a world!");
